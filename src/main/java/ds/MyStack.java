@@ -1,31 +1,43 @@
 package ds;
 
-import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.List;
 
 public class MyStack<T> {
-    private final List<T> items = new ArrayList<>();
+    private Node<T> top;
+    private int size = 0;
 
-    public void push(T value) {
-        items.add(value);
+    private static class Node<T> {
+        T value;
+        Node<T> next;
+        Node(T value, Node<T> next) {
+            this.value = value;
+            this.next = next;
+        }
+    }
+
+    public void push(T item) {
+        top = new Node<>(item, top);
+        size++;
     }
 
     public T pop() {
-        if (items.isEmpty()) throw new EmptyStackException();
-        return items.remove(items.size() - 1);
+        if (isEmpty()) throw new EmptyStackException();
+        T value = top.value;
+        top = top.next;
+        size--;
+        return value;
     }
 
     public T peek() {
-        if (items.isEmpty()) throw new EmptyStackException();
-        return items.get(items.size() - 1);
+        if (isEmpty()) throw new EmptyStackException();
+        return top.value;
     }
 
     public boolean isEmpty() {
-        return items.isEmpty();
+        return size == 0;
     }
 
     public int size() {
-        return items.size();
+        return size;
     }
 }
